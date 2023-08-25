@@ -21,3 +21,8 @@ export interface Pokemon {
   wins: 0;
   __v: number;
 }
+
+export enum FightState {
+  SELECTION,
+  FIGHTING,
+}

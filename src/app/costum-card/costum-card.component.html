@@ -1,32 +1,6 @@
-<div *ngIf="count < 1" class="landingContainer">
-  <div>
-    <mat-card class="landingCard">
-      <pre>{{ pokemons[0] | json }}</pre>
-      <img mat-card-image [src]="pokemons[0].imageUrl" />
-      <table>
-        <ng-container *ngFor="let item of pokemons[0].base | keyvalue">
-          <tr>
-            <td>{{ item.key }}</td>
-            <td>{{ item.value }}</td>
-          </tr>
-        </ng-container>
-      </table>
-    </mat-card>
-  </div>
-  <div></div>
-  <div>
-    <mat-card class="landingCard">
-      <img mat-card-image [src]="pokemons[1].imageUrl" />
-      <table>
-        <ng-container *ngFor="let item of pokemons[1].base | keyvalue">
-          <tr>
-            <td>{{ item.key }}</td>
-            <td>{{ item.value }}</td>
-          </tr>
-        </ng-container>
-      </table>
-    </mat-card>
-  </div>
+<div *ngIf="currentState === 0" class="landingContainer">
+  <button (click)="switchToFight()">click me</button>
 </div>
+<pre>{{ currentState }}</pre>
 
-<app-fight *ngIf="count > 0" [pokemons]="pokemons"></app-fight>
+<app-fight *ngIf="currentState === 1" [pokemons]="pokemons"></app-fight>
