@@ -1,1 +1,39 @@
-/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
+
+
+.landingContainer {
+    display:flex;
+    justify-content: center;
+}
+
+.landingCard{
+    max-width: 400px;
+    padding: 1rem;
+}
+
+.fightContainer{
+    display: flex;
+    justify-content: center;
+
+    .fightBox{
+        width: 400px;
+        height: 400px;
+    }
+
+    img{
+        width: 160px;
+        position: absolute;
+    }
+
+    img:nth-child(1){
+    bottom: 0;
+    left: 0;
+   }
+    img:nth-child(2){
+    top: 0;
+    right: 0;
+   }
+
+   
+}

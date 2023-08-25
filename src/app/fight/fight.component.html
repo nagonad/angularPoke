@@ -1,0 +1,13 @@
+<div class="fightContainer">
+  <mat-card class="fightBox">
+    <img
+      [@attackFirst]="isAttacking ? 'attacking' : 'notAttacking'"
+      [src]="pokemons[0].backImageUrl"
+    />
+    <img
+      [@attackSecond]="isAttacking ? 'attacking' : 'notAttacking'"
+      [src]="pokemons[1].imageUrl"
+    />
+  </mat-card>
+</div>
+<button (click)="changeDimmed()">den</button>
