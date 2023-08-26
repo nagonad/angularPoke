@@ -1,7 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { FightState } from '../models/pokemon';
+import {
+  FightState,
+  Pokemon,
+  SelectedPokemons,
+  emptySelectedPokemons,
+} from '../models/pokemon';
 
 const BASE_URL = 'http://localhost:3000/';
 
@@ -11,8 +16,13 @@ const BASE_URL = 'http://localhost:3000/';
 export class PokemonService {
   model = 'pokemons';
   private _fightState: BehaviorSubject<FightState> =
-    new BehaviorSubject<number>(0);
+    new BehaviorSubject<FightState>(FightState.SELECTION);
   public fightState$: Observable<number> = this._fightState.asObservable();
+
+  private _selectedPokemons: BehaviorSubject<SelectedPokemons> =
+    new BehaviorSubject<SelectedPokemons>(emptySelectedPokemons);
+  public selectedPokemons$: Observable<SelectedPokemons> =
+    this._selectedPokemons.asObservable();
 
   constructor(private http: HttpClient) {}
 
@@ -26,5 +36,9 @@ export class PokemonService {
 
   setFightingState(newState: FightState) {
     this._fightState.next(newState);
+  }
+
+  setSelectedPokemons(newState: SelectedPokemons) {
+    this._selectedPokemons.next(newState);
   }
 }

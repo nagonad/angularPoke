@@ -1,5 +1,10 @@
 import { Component, Input } from '@angular/core';
-import { Pokemon } from '../common/models/pokemon';
+import {
+  Pokemon,
+  SelectedPokemons,
+  emptyPokemon,
+  emptySelectedPokemons,
+} from '../common/models/pokemon';
 import {
   trigger,
   state,
@@ -7,10 +12,13 @@ import {
   animate,
   transition,
 } from '@angular/animations';
+import { PokemonService } from '../common/services/pokemons.service';
+import { Subscription } from 'rxjs';
 
 const ATTACK_OPTIONS = {
   attackSpeed: '0.3s',
   attackDelay: 300,
+  attackRange: '80px',
 
   animation: () => {
     return animate(ATTACK_OPTIONS.attackSpeed);
@@ -18,18 +26,17 @@ const ATTACK_OPTIONS = {
 };
 
 const POSITION_OPTIONS = {
-  attackRange: '50px',
   firstAttack: {
-    left: '50px',
-    bottom: '50px',
+    left: ATTACK_OPTIONS.attackRange,
+    bottom: ATTACK_OPTIONS.attackRange,
   },
   firstDefaultPosition: {
     left: '0px',
     bottom: '0px',
   },
   secondAttack: {
-    top: '50px',
-    right: '50px',
+    top: ATTACK_OPTIONS.attackRange,
+    right: ATTACK_OPTIONS.attackRange,
   },
   secondDefaultPosition: {
     top: '0px',
@@ -57,13 +64,36 @@ const POSITION_OPTIONS = {
   ],
 })
 export class FightComponent {
-  isAttacking: boolean = false;
+  isFirstPokeAttacking: boolean = false;
+  isSecondPokeAttacking: boolean = false;
   @Input() pokemons: Pokemon[] = [];
+  private selectedPokemonSubscription!: Subscription;
+  selectedPokemons$: SelectedPokemons = emptySelectedPokemons;
 
-  async changeDimmed() {
-    this.isAttacking = !this.isAttacking;
+  constructor(private pokemonService: PokemonService) {}
+
+  ngOnInit() {
+    this.selectedPokemonSubscription =
+      this.pokemonService.selectedPokemons$.subscribe((newValue) => {
+        this.selectedPokemons$ = newValue;
+      });
+  }
+
+  ngOnDestroy() {
+    this.selectedPokemonSubscription.unsubscribe();
+  }
+
+  async attackFirst() {
+    this.isFirstPokeAttacking = !this.isFirstPokeAttacking;
     await this.delay(ATTACK_OPTIONS.attackDelay);
-    this.isAttacking = !this.isAttacking;
+    this.isFirstPokeAttacking = !this.isFirstPokeAttacking;
+    await this.delay(ATTACK_OPTIONS.attackDelay);
+  }
+
+  async attackSecond() {
+    this.isSecondPokeAttacking = !this.isSecondPokeAttacking;
+    await this.delay(ATTACK_OPTIONS.attackDelay);
+    this.isSecondPokeAttacking = !this.isSecondPokeAttacking;
     await this.delay(ATTACK_OPTIONS.attackDelay);
   }
 

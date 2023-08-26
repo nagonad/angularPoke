@@ -4,6 +4,8 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatTableModule } from '@angular/material/table';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { NgModule } from '@angular/core';
 
 @NgModule({
@@ -14,6 +16,8 @@ import { NgModule } from '@angular/core';
     MatCardModule,
     MatListModule,
     MatTableModule,
+    MatAutocompleteModule,
+    MatProgressBarModule,
   ],
 })
 export class MaterialModule {}

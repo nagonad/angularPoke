@@ -8,6 +8,7 @@ import { CostumCardComponent } from './costum-card/costum-card.component';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FightComponent } from './fight/fight.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent, CostumCardComponent, FightComponent],
@@ -17,6 +18,7 @@ import { FightComponent } from './fight/fight.component';
     MaterialModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

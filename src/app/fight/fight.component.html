@@ -1,13 +1,26 @@
 <div class="fightContainer">
   <mat-card class="fightBox">
-    <img
-      [@attackFirst]="isAttacking ? 'attacking' : 'notAttacking'"
-      [src]="pokemons[0].backImageUrl"
-    />
-    <img
-      [@attackSecond]="isAttacking ? 'attacking' : 'notAttacking'"
-      [src]="pokemons[1].imageUrl"
-    />
+    <div class="firstPokemonContainer">
+      <img
+        [@attackFirst]="isFirstPokeAttacking ? 'attacking' : 'notAttacking'"
+        [src]="selectedPokemons$.firstPokemon.backImageUrl"
+        class="firstPokeImage"
+      />
+      <div class="firstPokeHealthBar">
+        <mat-progress-bar mode="determinate" value="80"></mat-progress-bar>
+      </div>
+    </div>
+    <div class="secondPokemonContainer">
+      <img
+        [@attackSecond]="isSecondPokeAttacking ? 'attacking' : 'notAttacking'"
+        [src]="selectedPokemons$.secondPokemon.imageUrl"
+        class="secondPokeImage"
+      />
+      <div class="secondPokeHealthBar">
+        <mat-progress-bar mode="determinate" value="40"></mat-progress-bar>
+      </div>
+    </div>
   </mat-card>
 </div>
-<button (click)="changeDimmed()">den</button>
+<button (click)="attackFirst()">first</button>
+<button (click)="attackSecond()">second</button>
