@@ -5,6 +5,7 @@ import {
   FightState,
   Pokemon,
   SelectedPokemons,
+  defaultPokemons,
   emptySelectedPokemons,
 } from '../models/pokemon';
 
@@ -20,7 +21,7 @@ export class PokemonService {
   public fightState$: Observable<number> = this._fightState.asObservable();
 
   private _selectedPokemons: BehaviorSubject<SelectedPokemons> =
-    new BehaviorSubject<SelectedPokemons>(emptySelectedPokemons);
+    new BehaviorSubject<SelectedPokemons>(defaultPokemons);
   public selectedPokemons$: Observable<SelectedPokemons> =
     this._selectedPokemons.asObservable();
 

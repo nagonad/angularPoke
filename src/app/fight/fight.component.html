@@ -6,8 +6,16 @@
         [src]="selectedPokemons$.firstPokemon.backImageUrl"
         class="firstPokeImage"
       />
+      <h1 *ngIf="isDamageVisible.second" class="secondDamage">
+        {{ damageNumbers.first }}
+      </h1>
+
       <div class="firstPokeHealthBar">
-        <mat-progress-bar mode="determinate" value="80"></mat-progress-bar>
+        <mat-progress-bar
+          mode="determinate"
+          [value]="currentHp.firstPokemon"
+          [color]="currentHp.firstPokemon > 30 ? 'primary' : 'warn'"
+        ></mat-progress-bar>
       </div>
     </div>
     <div class="secondPokemonContainer">
@@ -16,8 +24,15 @@
         [src]="selectedPokemons$.secondPokemon.imageUrl"
         class="secondPokeImage"
       />
+      <h1 *ngIf="isDamageVisible.first" class="firstDamage">
+        {{ damageNumbers.second }}
+      </h1>
       <div class="secondPokeHealthBar">
-        <mat-progress-bar mode="determinate" value="40"></mat-progress-bar>
+        <mat-progress-bar
+          mode="determinate"
+          [value]="currentHp.secondPokemon"
+          [color]="currentHp.secondPokemon > 30 ? 'primary' : 'warn'"
+        ></mat-progress-bar>
       </div>
     </div>
   </mat-card>

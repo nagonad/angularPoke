@@ -1,39 +1,73 @@
 <div *ngIf="currentState === 0" class="landingContainer">
-  <button (click)="switchToFight()">click me</button>
-  <mat-autocomplete
-    #auto="matAutocomplete"
-    (optionSelected)="saveFirstPokemon($event)"
-  >
-    <mat-option *ngFor="let pokemon of pokemons" [value]="pokemon">
-      {{ pokemon.name.english }}
-    </mat-option>
-  </mat-autocomplete>
-  <input
-    type="text"
-    placeholder="Pick one"
-    aria-label="Number"
-    matInput
-    [formControl]="firstPokemon"
-    [matAutocomplete]="auto"
-    [value]="firstPokemon.value?.name?.english"
-  />
-  <mat-autocomplete
-    #auto2="matAutocomplete"
-    (optionSelected)="saveSecondPokemon($event)"
-  >
-    <mat-option *ngFor="let pokemon of pokemons" [value]="pokemon">
-      {{ pokemon.name.english }}
-    </mat-option>
-  </mat-autocomplete>
-  <input
-    type="text"
-    placeholder="Pick one"
-    aria-label="Number"
-    matInput
-    [formControl]="secondPokemon"
-    [matAutocomplete]="auto2"
-    [value]="secondPokemon.value?.name?.english"
-  />
+  <div>
+    <button (click)="switchToFight()">click me</button>
+  </div>
+  <div>
+    <mat-autocomplete
+      #auto="matAutocomplete"
+      (optionSelected)="saveFirstPokemon($event)"
+    >
+      <mat-option *ngFor="let pokemon of pokemons" [value]="pokemon">
+        {{ pokemon.name.english }}
+      </mat-option>
+    </mat-autocomplete>
+    <input
+      type="text"
+      placeholder="Pick one"
+      aria-label="Number"
+      matInput
+      [formControl]="firstPokemon"
+      [matAutocomplete]="auto"
+      [value]="firstPokemon.value?.name?.english"
+    />
+    <div>
+      <img
+        [src]="selectedPokemons$.firstPokemon.imageUrl"
+        alt=""
+        style="width: 100%"
+      />
+      <tbody>
+        <tr *ngFor="let item of selectedPokemons$.firstPokemon.base | keyvalue">
+          <td style="width: 100%">{{ item.key }}</td>
+          <td>{{ item.value }}</td>
+        </tr>
+      </tbody>
+    </div>
+  </div>
+  <div>
+    <mat-autocomplete
+      #auto2="matAutocomplete"
+      (optionSelected)="saveSecondPokemon($event)"
+    >
+      <mat-option *ngFor="let pokemon of pokemons" [value]="pokemon">
+        {{ pokemon.name.english }}
+      </mat-option>
+    </mat-autocomplete>
+    <input
+      type="text"
+      placeholder="Pick one"
+      aria-label="Number"
+      matInput
+      [formControl]="secondPokemon"
+      [matAutocomplete]="auto2"
+      [value]="secondPokemon.value?.name?.english"
+    />
+    <div>
+      <img
+        [src]="selectedPokemons$.secondPokemon.imageUrl"
+        alt=""
+        style="width: 100%"
+      />
+      <tbody>
+        <tr
+          *ngFor="let item of selectedPokemons$.secondPokemon.base | keyvalue"
+        >
+          <td style="width: 100%">{{ item.key }}</td>
+          <td>{{ item.value }}</td>
+        </tr>
+      </tbody>
+    </div>
+  </div>
 </div>
 
 <app-fight *ngIf="currentState === 1" [pokemons]="pokemons"></app-fight>

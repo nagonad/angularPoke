@@ -1,7 +1,9 @@
 import { Component, Input } from '@angular/core';
 import {
+  FightState,
   Pokemon,
   SelectedPokemons,
+  calculateDamage,
   emptyPokemon,
   emptySelectedPokemons,
 } from '../common/models/pokemon';
@@ -67,34 +69,91 @@ export class FightComponent {
   isFirstPokeAttacking: boolean = false;
   isSecondPokeAttacking: boolean = false;
   @Input() pokemons: Pokemon[] = [];
+  @Input() switchToWinner: Function = () => {};
   private selectedPokemonSubscription!: Subscription;
+  public currentState: FightState = FightState.SELECTION;
+  private fightingStateSubscription!: Subscription;
   selectedPokemons$: SelectedPokemons = emptySelectedPokemons;
 
-  constructor(private pokemonService: PokemonService) {}
+  currentHp = {
+    firstPokemon: 100,
+    secondPokemon: 100,
+  };
+
+  isDamageVisible = {
+    first: false,
+    second: false,
+  };
+
+  damageNumbers = {
+    first: 0,
+    second: 0,
+  };
+
+  constructor(private pokemonsService: PokemonService) {}
 
   ngOnInit() {
     this.selectedPokemonSubscription =
-      this.pokemonService.selectedPokemons$.subscribe((newValue) => {
+      this.pokemonsService.selectedPokemons$.subscribe((newValue) => {
         this.selectedPokemons$ = newValue;
       });
+    this.fightingStateSubscription = this.pokemonsService.fightState$.subscribe(
+      (newValue: number) => {
+        this.currentState = newValue;
+      }
+    );
   }
 
   ngOnDestroy() {
     this.selectedPokemonSubscription.unsubscribe();
+    this.fightingStateSubscription.unsubscribe();
   }
 
   async attackFirst() {
+    const damage = calculateDamage(this.selectedPokemons$, true);
+    this.damageNumbers = { ...this.damageNumbers, first: Math.floor(damage) };
     this.isFirstPokeAttacking = !this.isFirstPokeAttacking;
     await this.delay(ATTACK_OPTIONS.attackDelay);
+    this.isDamageVisible = { ...this.isDamageVisible, second: true };
+    this.currentHp = {
+      ...this.currentHp,
+      secondPokemon:
+        this.currentHp.secondPokemon -
+        (damage * 100) / this.selectedPokemons$.secondPokemon.base.HP,
+    };
     this.isFirstPokeAttacking = !this.isFirstPokeAttacking;
     await this.delay(ATTACK_OPTIONS.attackDelay);
+    await this.delay(ATTACK_OPTIONS.attackDelay);
+    this.isDamageVisible = { ...this.isDamageVisible, second: false };
+    if (this.currentHp.secondPokemon < 0) {
+      await this.delay(2000);
+      this.pokemonsService.setFightingState(FightState.WINNER);
+    }
+    this.attackSecond();
   }
 
   async attackSecond() {
+    const damage = calculateDamage(this.selectedPokemons$, false);
+    this.damageNumbers = { ...this.damageNumbers, second: Math.floor(damage) };
     this.isSecondPokeAttacking = !this.isSecondPokeAttacking;
     await this.delay(ATTACK_OPTIONS.attackDelay);
+    this.isDamageVisible = { ...this.isDamageVisible, first: true };
+    this.currentHp = {
+      ...this.currentHp,
+      firstPokemon:
+        this.currentHp.firstPokemon -
+        (damage * 100) / this.selectedPokemons$.firstPokemon.base.HP,
+    };
     this.isSecondPokeAttacking = !this.isSecondPokeAttacking;
     await this.delay(ATTACK_OPTIONS.attackDelay);
+    await this.delay(ATTACK_OPTIONS.attackDelay);
+
+    this.isDamageVisible = { ...this.isDamageVisible, first: false };
+    if (this.currentHp.firstPokemon < 0) {
+      await this.delay(2000);
+      this.pokemonsService.setFightingState(FightState.WINNER);
+    }
+    this.attackFirst();
   }
 
   async delay(timeout: number) {

@@ -1,6 +1,13 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import 'https://fonts.googleapis.com/icon?family=Material+Icons';
+@font-face {
+    font-family: Poke;
+    src: url(assets/fonts/Pokemon.ttf) format("TrueType");
+}
 
+ * {
+     font-family: 'Poke';
+ }
 
 .landingContainer {
     display:flex;
@@ -27,15 +34,6 @@
     }
 }
 
-// .firstPokeImage{
-//     bottom: 0;
-//     left: 0;
-// }
-
-// .secondPokeImage{
-//     top: 0;
-//     right: 0;   
-// 
 
 @mixin health-bar {
     position: absolute;
@@ -53,4 +51,15 @@
     @include health-bar();
     top:30px;
     left:10px;
+}
+
+.firstDamage{
+    position: absolute;
+    left: 60px;
+    bottom:0px
+}
+.secondDamage{
+    position: absolute;
+    right: 60px;
+    top: 100px;
 }
